@@ -7,9 +7,15 @@ import { PostsModule } from './post/post.module'
 import { Post } from './post/entities/post.entity'
 import { UsersModule } from './users/users.module'
 import { User } from './users/entities/user.entity'
+import { ConfigModule } from '@nestjs/config'
 
 @Module({
   imports: [
+
+    ConfigModule.forRoot({
+      isGlobal: true
+    }),
+
     TypeOrmModule.forRoot({
       port: 5432,
       type: 'postgres',
