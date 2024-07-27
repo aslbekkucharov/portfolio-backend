@@ -11,9 +11,13 @@ export class UsersController {
     @UseGuards(AuthGuard)
     @Get(':username')
     async findOne(@Param('username') username: string) {
-
         const user = await this.userService.findOne(username)
 
-        return
+        return {
+            id: user.id,
+            role: user.role,
+            name: user.name,
+            username: user.username
+        }
     }
 }

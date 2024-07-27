@@ -23,7 +23,7 @@ import { ConfigModule } from '@nestjs/config'
       synchronize: true,
       username: 'postgres',
       database: 'portfolio',
-      password: 'Qwerty1234',
+      password: 'root',
       entities: [Post, User],
     }),
 

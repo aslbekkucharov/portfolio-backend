@@ -1,5 +1,6 @@
-import { Injectable, UnauthorizedException } from '@nestjs/common'
+import { BadRequestException, Injectable, UnauthorizedException } from '@nestjs/common'
 
+import * as bcrypt from 'bcrypt'
 import { UsersService } from 'src/users/users.service'
 import { AuthPayload, AuthResult, SignInData } from 'src/types/auth'
 import { JwtService } from '@nestjs/jwt'
@@ -15,36 +16,56 @@ export class AuthService {
 
     async authenticate(payload: AuthPayload): Promise<AuthResult> {
         const user = await this.validateUser(payload)
+        const token = await this.generateToken(user)
 
         if (!user) {
             throw new UnauthorizedException()
         }
 
         return {
-            id: 1,
-            name: '',
-            role: '',
-            token: '',
-            username: '',
+            token,
+            id: user.id,
+            name: user.name,
+            role: user.role,
+            username: user.username,
         }
     }
 
-    async signIn() {
-        return
+    async generateToken(user: SignInData) {
+        const payload = { id: user.id, username: user.username, issuedAt: new Date() }
+        return this.jwtService.sign(payload)
     }
 
     async createUser(payload: CreateUserDto) {
-        return this.userService.create(payload)
+
+        const isUserExists = await this.userService.findOne(payload.username)
+
+        if (isUserExists) {
+            throw new BadRequestException('This username already exists')
+        }
+
+        const user = await this.userService.create(payload)
+        const token = await this.generateToken(user)
+
+        return {
+            token,
+            id: user.id,
+            name: user.name,
+            role: user.role,
+            username: user.username
+        }
     }
 
     async validateUser(payload: AuthPayload): Promise<SignInData | null> {
         const user = await this.userService.findOne(payload.username)
 
-        console.log(await this.jwtService.verifyAsync(user.password))
+        if (!user) {
+            throw new UnauthorizedException('Wrong credentials')
+        }
 
-        return null
+        const isPasswordsMatch = await bcrypt.compare(payload.password, user?.password)
 
-        if (user && await this.jwtService.verifyAsync(user.password)) {
+        if (user && isPasswordsMatch) {
             return {
                 id: user.id,
                 role: user.role,
