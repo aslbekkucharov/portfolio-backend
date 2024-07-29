@@ -7,7 +7,7 @@ import { PostsModule } from './post/post.module'
 import { Post } from './post/entities/post.entity'
 import { UsersModule } from './users/users.module'
 import { User } from './users/entities/user.entity'
-import { ConfigModule } from '@nestjs/config'
+import { ConfigModule, ConfigService } from '@nestjs/config'
 
 @Module({
   imports: [
@@ -16,15 +16,19 @@ import { ConfigModule } from '@nestjs/config'
       isGlobal: true
     }),
 
-    TypeOrmModule.forRoot({
-      port: 5432,
-      type: 'postgres',
-      host: 'localhost',
-      synchronize: true,
-      username: 'postgres',
-      database: 'portfolio',
-      password: 'root',
-      entities: [Post, User],
+    TypeOrmModule.forRootAsync({
+      imports: [ConfigModule],
+      useFactory: async (configService: ConfigService) => ({
+        type: 'postgres',
+        synchronize: true,
+        host: configService.get<string>('DB_HOST'),
+        port: +configService.get<string>('DB_PORT'),
+        database: configService.get<string>('DB_NAME'),
+        username: configService.get<string>('DB_USERNAME'),
+        password: configService.get<string>('DB_PASSWORD'),
+        entities: [Post, User],
+      }),
+      inject: [ConfigService]
     }),
 
     PostsModule,

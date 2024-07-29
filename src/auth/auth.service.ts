@@ -2,7 +2,7 @@ import { BadRequestException, Injectable, UnauthorizedException } from '@nestjs/
 
 import * as bcrypt from 'bcrypt'
 import { UsersService } from 'src/users/users.service'
-import { AuthPayload, AuthResult, SignInData } from 'src/types/auth'
+import { AuthPayload, AuthResult, SignInResponseData } from 'src/types/auth'
 import { JwtService } from '@nestjs/jwt'
 import { CreateUserDto } from 'src/users/dto/create-user.dto'
 
@@ -24,19 +24,21 @@ export class AuthService {
 
         return {
             token,
-            id: user.id,
-            name: user.name,
-            role: user.role,
-            username: user.username,
+            user: {
+                id: user.id,
+                name: user.name,
+                role: user.role,
+                username: user.username,
+            }
         }
     }
 
-    async generateToken(user: SignInData) {
+    async generateToken(user: SignInResponseData) {
         const payload = { id: user.id, username: user.username, issuedAt: new Date() }
         return this.jwtService.sign(payload)
     }
 
-    async createUser(payload: CreateUserDto) {
+    async createUser(payload: CreateUserDto): Promise<AuthResult> {
 
         const isUserExists = await this.userService.findOne(payload.username)
 
@@ -49,14 +51,16 @@ export class AuthService {
 
         return {
             token,
-            id: user.id,
-            name: user.name,
-            role: user.role,
-            username: user.username
+            user: {
+                id: user.id,
+                name: user.name,
+                role: user.role,
+                username: user.username
+            }
         }
     }
 
-    async validateUser(payload: AuthPayload): Promise<SignInData | null> {
+    async validateUser(payload: AuthPayload): Promise<SignInResponseData | null> {
         const user = await this.userService.findOne(payload.username)
 
         if (!user) {
