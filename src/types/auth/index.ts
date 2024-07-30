@@ -1,11 +1,11 @@
-export type AuthPayload = { username: string, password: string }
-export type SignInResponseData = { id: number, username: string, name: string, role: string }
-export interface AuthResult {
-    token: string,
-    user: SignInResponseData
+export type AuthPayload = { username: string; password: string }
+export type SignInResponseData = {
+  id: number
+  username: string
+  name: string
+  role: string
 }
-
-export enum UserRole {
-    ADMIN = 'admin',
-    MODERATOR = 'moderator'
+export interface AuthResult {
+  token: string
+  user: SignInResponseData
 }

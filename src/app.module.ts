@@ -11,9 +11,8 @@ import { ConfigModule, ConfigService } from '@nestjs/config'
 
 @Module({
   imports: [
-
     ConfigModule.forRoot({
-      isGlobal: true
+      isGlobal: true,
     }),
 
     TypeOrmModule.forRootAsync({
@@ -28,14 +27,13 @@ import { ConfigModule, ConfigService } from '@nestjs/config'
         password: configService.get<string>('DB_PASSWORD'),
         entities: [Post, User],
       }),
-      inject: [ConfigService]
+      inject: [ConfigService],
     }),
 
     PostsModule,
     UsersModule,
-    AuthModule
+    AuthModule,
   ],
-  providers: []
+  providers: [],
 })
-
-export class AppModule { }
+export class AppModule {}

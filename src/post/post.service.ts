@@ -7,8 +7,9 @@ import { Post } from './entities/post.entity'
 
 @Injectable()
 export class PostsService {
-
-  constructor(@InjectRepository(Post) private postRepository: Repository<Post>) {}
+  constructor(
+    @InjectRepository(Post) private postRepository: Repository<Post>,
+  ) {}
 
   create(createPostDto: CreatePostDto) {
     return this.postRepository.save(createPostDto)
@@ -19,7 +20,6 @@ export class PostsService {
   }
 
   async findOne(id: number): Promise<Post | null> {
-
     const foundPost = await this.postRepository.findOneBy({ id })
 
     if (!foundPost) {

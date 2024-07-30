@@ -9,17 +9,17 @@ import { CreateUserDto } from './dto/create-user.dto'
 
 @Injectable()
 export class UsersService {
-    constructor(
-        private readonly configService: ConfigService,
-        @InjectRepository(User) private userRepository: Repository<User>
-    ) { }
+  constructor(
+    private readonly configService: ConfigService,
+    @InjectRepository(User) private userRepository: Repository<User>,
+  ) { }
 
-    async create(user: CreateUserDto): Promise<User | undefined> {
-        const hashedPassword = await bcrypt.hash(user.password, +this.configService.get<string>('PASSWORD_SALT'))
-        return this.userRepository.save({ ...user, password: hashedPassword })
-    }
+  async create(user: CreateUserDto): Promise<User | undefined> {
+    const hashedPassword = await bcrypt.hash(user.password, +this.configService.get<string>('PASSWORD_SALT'))
+    return this.userRepository.save({ ...user, password: hashedPassword })
+  }
 
-    async findOne(username: string): Promise<User | undefined> {
-        return this.userRepository.findOneBy({ username })
-    }
+  async findOne(username: string): Promise<User | undefined> {
+    return this.userRepository.findOneBy({ username })
+  }
 }
