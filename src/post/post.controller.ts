@@ -23,7 +23,7 @@ import { AllowedRoles } from 'src/decorators/role.decorator'
 export class PostsController {
   constructor(private readonly postsService: PostsService) { }
 
-  @Post('create')
+  @Post()
   @UseGuards(AuthGuard, RoleGuard)
   @AllowedRoles(Roles.ADMIN)
   create(@Body(new ValidationPipe()) createPostDto: CreatePostDto) {
@@ -47,7 +47,7 @@ export class PostsController {
     return this.postsService.update(+id, updatePostDto)
   }
 
-  @Delete('delete/:id')
+  @Delete(':id')
   @UseGuards(AuthGuard, RoleGuard)
   @AllowedRoles(Roles.ADMIN)
   remove(@Param('id', ParseIntPipe) id: string) {
