@@ -1,4 +1,4 @@
-import { IsBoolean, IsNotEmpty, IsString } from 'class-validator'
+import { IsBoolean, IsNotEmpty, IsString, MaxLength } from 'class-validator'
 
 export class CreatePostDto {
   @IsString({ message: 'Поле title должно содержать значение типа string' })
@@ -9,8 +9,11 @@ export class CreatePostDto {
   @IsNotEmpty({ message: 'Поле content обязательно к заполнению' })
   content: string
 
-  @IsBoolean({
-    message: 'Поле isActive должно содержать значение типа boolean',
-  })
+  @MaxLength(200, { message: 'Максимальная длина краткого описания 200 символов' })
+  @IsString({ message: 'Поле excerpt должно содержать значение типа string' })
+  @IsNotEmpty({ message: 'Поле excerpt обязательно к заполнению' })
+  excerpt: string
+
+  @IsBoolean({ message: 'Поле isActive должно содержать значение типа boolean' })
   isActive: boolean
 }

@@ -11,6 +11,9 @@ export class Post {
   @Column()
   content: string
 
+  @Column()
+  excerpt: string
+
   @Column({ default: true })
   isActive: boolean
 }
