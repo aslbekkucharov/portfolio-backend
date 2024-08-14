@@ -1,4 +1,4 @@
-import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm'
+import { Column, CreateDateColumn, Entity, Index, PrimaryGeneratedColumn } from 'typeorm'
 
 @Entity()
 export class Post {
@@ -10,6 +10,9 @@ export class Post {
 
   @Column()
   content: string
+
+  @CreateDateColumn()
+  createdDate: Date
 
   @Column()
   excerpt: string

@@ -9,14 +9,22 @@ import { Post } from './entities/post.entity'
 export class PostsService {
   constructor(
     @InjectRepository(Post) private postRepository: Repository<Post>,
-  ) {}
+  ) { }
 
   create(createPostDto: CreatePostDto) {
     return this.postRepository.save(createPostDto)
   }
 
-  findAll(): Promise<Post[]> {
-    return this.postRepository.find()
+  async findAll(): Promise<Omit<Post, 'content'>[]> {
+    const posts = await this.postRepository.find({ order: { createdDate: 'DESC' } })
+
+    return posts.map((post) => ({
+      id: post.id,
+      title: post.title,
+      excerpt: post.excerpt,
+      isActive: post.isActive,
+      createdDate: post.createdDate
+    }))
   }
 
   async findOne(id: number): Promise<Post | null> {
