@@ -18,7 +18,7 @@ import { ConfigModule, ConfigService } from '@nestjs/config'
       imports: [ConfigModule],
       useFactory: async (configService: ConfigService) => ({
         type: 'postgres',
-        synchronize: true,
+        synchronize: false,
         host: configService.get<string>('DB_HOST'),
         port: +configService.get<string>('DB_PORT'),
         database: configService.get<string>('DB_NAME'),
