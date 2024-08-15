@@ -7,6 +7,7 @@ import { Post } from './post/entities/post.entity'
 import { UsersModule } from './users/users.module'
 import { User } from './users/entities/user.entity'
 import { ConfigModule, ConfigService } from '@nestjs/config'
+import { AboutModule } from './about/about.module';
 
 @Module({
   imports: [
@@ -32,6 +33,7 @@ import { ConfigModule, ConfigService } from '@nestjs/config'
     PostsModule,
     UsersModule,
     AuthModule,
+    AboutModule,
   ],
   providers: [],
 })
