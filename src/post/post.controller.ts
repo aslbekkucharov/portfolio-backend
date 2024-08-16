@@ -15,8 +15,8 @@ import { Roles } from 'src/enums/roles.enum'
 import { PostsService } from './post.service'
 import { RoleGuard } from 'src/guards/role.guard'
 import { AuthGuard } from 'src/guards/auth.guard'
-import { CreatePostDto } from './dto/create-post.dto'
-import { UpdatePostDto } from './dto/update-post.dto'
+import { CreatePostDto } from 'src/post/dto/create-post.dto'
+import { UpdatePostDto } from 'src/post/dto/update-post.dto'
 import { AllowedRoles } from 'src/decorators/role.decorator'
 
 @Controller('posts')

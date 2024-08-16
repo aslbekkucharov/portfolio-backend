@@ -3,7 +3,7 @@ import { JwtService } from '@nestjs/jwt'
 import { TypeOrmModule } from '@nestjs/typeorm'
 
 import { PostsService } from './post.service'
-import { Post } from './entities/post.entity'
+import { Post } from 'src/post/entities/post.entity'
 import { PostsController } from './post.controller'
 
 @Module({

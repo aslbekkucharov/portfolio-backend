@@ -3,11 +3,12 @@ import { TypeOrmModule } from '@nestjs/typeorm'
 
 import { AuthModule } from './auth/auth.module'
 import { PostsModule } from './post/post.module'
-import { Post } from './post/entities/post.entity'
+import { Post } from './about/entities/about.entity'
 import { UsersModule } from './users/users.module'
 import { User } from './users/entities/user.entity'
 import { ConfigModule, ConfigService } from '@nestjs/config'
 import { AboutModule } from './about/about.module';
+import { ExperienceModule } from './experience/experience.module';
 
 @Module({
   imports: [
@@ -34,6 +35,7 @@ import { AboutModule } from './about/about.module';
     UsersModule,
     AuthModule,
     AboutModule,
+    ExperienceModule,
   ],
   providers: [],
 })
